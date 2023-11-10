@@ -17,5 +17,8 @@ setInterval(() => {
     const controller = new AbortController();
 
     console.log("Checking if bot is alive...");
-    fetchTimeout("https://discord-bot-1ozw.onrender.com", 60000).then(res => res.text()).then(data => console.log("Website is up!: " + data)).catch(err => console.log("Website is down!: " + err));
+    fetchTimeout("https://discord-bot-1ozw.onrender.com", 60000, , { signal: controller.signal })
+        .then(res => res.text())
+        .then(data => console.log("Website is up!: " + data))
+        .catch(err => console.log("Website is down!: " + err));
 }, 300000);
