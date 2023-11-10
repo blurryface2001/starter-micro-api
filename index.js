@@ -5,19 +5,21 @@ http.createServer(function (req, res) {
     res.end();
 }).listen(process.env.PORT || 3000);
 
-const fetchTimeout = (url, ms, { signal, ...options } = {}) => {
+const fetchTimeout = (url, ms) => {
     const controller = new AbortController();
-    const promise = fetch(url, { signal: controller.signal, ...options });
+    const promise = fetch(url, { signal: controller.signal});
+    console.log("Started pinging...")
     if (signal) signal.addEventListener("abort", () => controller.abort());
     const timeout = setTimeout(() => controller.abort(), ms);
-    return promise.finally(() => clearTimeout(timeout));
+    return promise.finally(() => { 
+        console.log("It's done!")
+        clearTimeout(timeout)
+    });
 };
 
 setInterval(() => {
-    const controller = new AbortController();
-
     console.log("Checking if bot is alive...");
-    fetchTimeout("https://discord-bot-1ozw.onrender.com", 60000, { signal: controller.signal })
+    fetchTimeout("https://discord-bot-1ozw.onrender.com", 60000)
         .then(res => res.text())
         .then(data => console.log("Website is up!: " + data))
         .catch(err => console.log("Website is down!: " + err));
