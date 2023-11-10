@@ -13,7 +13,7 @@ const fetchTimeout = (url, ms, { signal, ...options } = {}) => {
     return promise.finally(() => clearTimeout(timeout));
 };
 
-setTimeout(() => {
+setInterval(() => {
     const controller = new AbortController();
 
     console.log("Checking if bot is alive...");
